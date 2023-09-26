@@ -33,22 +33,26 @@
 <pre>
 [
   {
-    "title": "Movie Title",
-    "description": "Movie Description.",
-    "genre": {
-      "name": "Crime",
-      "description": "Crime genre is largely classified by a story that is 
-              centered around the solving of a crime." 
+    "Genre": {
+        "Name": "Animated",
+        "Description": "Animation is a method in which pictures are manipulated to appear 
+        as moving images. In traditional animation, images are drawn or painted by hand on 
+        transparent celluloid sheets to be photographed and exhibited on film."
     },
-    "director": { 
-      "name": "Quentin Tarantino",
-      "bio": "His Bio.",
-      "birthyear": 1963, 
-      "deathyear": null
+    "Director": {
+        "Name": "Jonathan Demme",
+        "Bio": "Robert Jonathan Demme was an American director, producer, and screenwriter.",
+        "Birthyear": "1944-01-01",
+        "Deathyear": "2017-01-01"
     },
-    "image_url": "https://website.com/Image.jpg",
-    "featured": false
-  },
+    "Actors": [],
+    "_id": "6512158099eb8a7d7fdf59c7",
+    "Title": "Silence of the Lambs",
+    "Description": "A young FBI cadet must receive the help of an incarcerated and 
+    manipulative cannibal killer to help catch another serial killer.",
+    "Imageurl": "silenceofthelambs.png",
+    "Featured": true
+  }
 ]
 </pre>
         </td>
@@ -57,28 +61,33 @@
 
       <tr>
         <td>Returns data about a single movie by title.</td>
-        <td style="white-space: nowrap;">/movies/:title</td>
+        <td style="white-space: nowrap;">/movies/:Title</td>
         <td>GET</td>
-        <td><span class="fw-bold">title</span> - The title of the movie.</td>
+        <td><span class="fw-bold">Title</span> - The title of the movie.</td>
         <td>None.</td>
         <td>A JSON object holding data about a single movie, containing a title, description, genre, director, image url and featured. Example:
 <pre>
 {
-  "title": "Movie Title",
-  "description": "Movie Description.",
-  "genre": {
-    "name": "Crime",
-    "description": "Crime genre is largely classified by a story that is 
-            centered around the solving of a crime." 
+  "Genre": {
+      "Name": "Drama",
+      "Description": "Dramas follow a clearly defined narrative plot structure, 
+      portraying real-life scenarios or extreme situations with emotionally-driven characters."
   },
-  "director": { 
-    "name": "Quentin Tarantino",
-    "bio": "His Bio.",
-    "birthyear": 1963, 
-    "deathyear": null
+  "Director": {
+      "Name": "James Cameron",
+      "Bio": "James Cameron is a visionary director and filmmaker celebrated for his 
+      groundbreaking work on movies like "Avatar" and "Titanic."",
+      "Birthyear": "1954-08-16",
+      "Deathyear": null
   },
-  "image_url": "https://website.com/Image.jpg",
-  "featured": false
+  "Actors": [],
+  "_id": "651218a699eb8a7d7fdf59c9",
+  "Title": "Titanic",
+  "Description": "PIncorporating both historical and fictionalized aspects, it is based on 
+  accounts of the sinking of RMS Titanic in 1912. Kate Winslet and Leonardo DiCaprio star as 
+  members of different social classes who fall in love during the ship's maiden voyage.",
+  "Imageurl": "https://upload.wikimedia.org/wikipedia/en/1/18/Titanic_%281997_film%29_poster.png",
+  "Featured": false
 }
 </pre>
         </td>
@@ -87,16 +96,16 @@
 
       <tr>
         <td>Returns data about a genre by genre name.</td>
-        <td style="white-space: nowrap;">/movies/genre/:genreName</td>
+        <td style="white-space: nowrap;">/movies/genre/:GenreName</td>
         <td>GET</td>
-        <td><span class="fw-bold">genreName</span> - The genre name.</td>
+        <td><span class="fw-bold">GenreName</span> - The genre name.</td>
         <td>None.</td>
         <td>A JSON object holding data about a genre, containing the genre name and description. Example:
 <pre>
 {
-  "name": "Crime",
-  "description": "Crime genre is largely classified by a story that is 
-          centered around the solving of a crime."
+  "Name": "Drama",
+  "Description": "Dramas follow a clearly defined narrative plot structure, portraying 
+  real-life scenarios or extreme situations with emotionally-driven characters."
 }
 </pre>
         </td>
@@ -105,17 +114,18 @@
 
       <tr>
         <td>Returns data about a director by name.</td>
-        <td style="white-space: nowrap;">/directors/:name</td>
+        <td style="white-space: nowrap;">/directors/:Name</td>
         <td>GET</td>
-        <td><span class="fw-bold">name</span> - The name of the director.</td>
+        <td><span class="fw-bold">Name</span> - The name of the director.</td>
         <td>None.</td>
         <td>A JSON object holding data about a director, containing bio, birth year and death year. Example:
 <pre>
 {
-  "name": "Quentin Tarantino",
-  "bio": "His Bio.",
-  "birthyear": 1963, 
-  "deathyear": null
+  "Name": "Steven Spielberg",
+  "Bio": "Steven Spielberg is a prolific filmmaker known for directing classic 
+  movies like "E.T. the Extra-Terrestrial" and "Jurassic Park."",
+  "Birthyear": "1946-12-18",
+  "Deathyear": null
 }
 </pre>
         </td>
@@ -129,20 +139,71 @@
         <td>None.</td>
         <td>A JSON object holding data about a new user to register, structured like:
 <pre>
-{
-  "name": "User3",
-  "email": "user3@gmail.com",
-  "favoriteMovies": []
+{ 
+  "Username": "NewUser",
+  "Password": "NewUser",
+  "Email": "NewUser@gmail.com",
+  "Birthday": "2000-01-01"
 }
 </pre>
         </td>
         <td>A JSON object holding data about the newly registered user with auto-generated ID. Example:
 <pre>
 {
-  "name": "User3",
-  "email": "user3@gmail.com",
-  "favoriteMovies": [],
-  "id": "8b4b2e2d-17ea-4d2e-8ce2-e8b462ba57fd"
+  "Username": "NewUser",
+  "Password": "NewUser",
+  "Email": "NewUser@gmail.com",
+  "Birthday": "2000-01-01T00:00:00.000Z",
+  "FavoriteMovies": [],
+  "_id": "651367493c20572a6fe1cee6",
+  "__v": 0
+}
+</pre>
+        </td>
+      </tr>
+
+
+      <tr>
+        <td>Returns a list of ALL users.</td>
+        <td>/users</td>
+        <td>GET</td>
+        <td>None.</td>
+        <td>None.</td>
+        <td>A JSON object holding data about all the users. Example:
+<pre>
+[
+  {
+    "_id": "65121bbb99eb8a7d7fdf59d2",
+    "Username": "user2",
+    "Password": "user2",
+    "Email": "user2@gmail.com",
+    "Birthday": "1981-02-02T00:00:00.000Z",
+    "FavoriteMovies": [
+        "651219ba99eb8a7d7fdf59cf"
+    ]
+  }
+]
+</pre>
+        </td>
+      </tr>
+
+
+      <tr>
+        <td>Returns data about a single user by username.</td>
+        <td style="white-space: nowrap;">/users/:Username</td>
+        <td>GET</td>
+        <td><span class="fw-bold">Username</span> - The Username of the user.</td>
+        <td>None.</td>
+        <td>A JSON object holding data about a single user, containing the _id, Username, Password, Email, Birthday and FavoriteMovies. Example:
+<pre>
+{
+  "_id": "651367493c20572a6fe1cee6",
+  "Username": "NewUser",
+  "Password": "NewUser",
+  "Email": "NewUser@gmail.com",
+  "Birthday": "2000-01-01T00:00:00.000Z",
+  "FavoriteMovies": [],
+  "__v": 0
 }
 </pre>
         </td>
@@ -151,23 +212,29 @@
 
       <tr>
         <td>Allow users to update their user info.</td>
-        <td style="white-space: nowrap;">/users/:id</td>
+        <td style="white-space: nowrap;">/users/:Username</td>
         <td>PUT</td>
-        <td><span class="fw-bold">id</span> - The id of the user to be updated.</td>
+        <td><span class="fw-bold">Username</span> - The Username of the user to be updated.</td>
         <td>A JSON object holding data about the user's changes on his/her name, structured like:
 <pre>
 {
-  "name": "User3Updated"
+  "Username": "NewUser",
+  "Password": "NewPassword",
+  "Email": "NewEmail@gmail.com",
+  "Birthday": "1990-12-12"
 }
 </pre>
         </td>
         <td>A JSON object holding data about the user's applied changes on his/her name. Example:
 <pre>
 {
-  "name": "User3Updated",
-  "email": "user3@gmail.com",
-  "favoriteMovies": [],
-  "id": "8b4b2e2d-17ea-4d2e-8ce2-e8b462ba57fd"
+  "_id": "651367493c20572a6fe1cee6",
+  "Username": "NewUser",
+  "Password": "NewPassword",
+  "Email": "NewEmail@gmail.com",
+  "Birthday": "1990-12-12T00:00:00.000Z",
+  "FavoriteMovies": [],
+  "__v": 0
 }
 </pre>
         </td>
@@ -176,41 +243,66 @@
 
       <tr>
         <td>Allow users to add a movie to their list of favorites.</td>
-        <td style="white-space: nowrap;">/users/:id/:movieTitle</td>
+        <td style="white-space: nowrap;">/users/:Username/movies/:MovieID</td>
         <td>POST</td>
         <td>
-          <span class="fw-bold">id</span> - The id of the user.
+          <span class="fw-bold">Username</span> - The Username of the user.
           <br>
-          <span class="fw-bold">movieTitle</span> - The title of the movie which will be added to their list of favorites.
+          <span class="fw-bold">MovieID</span> - The MovieID of the movie which will be added to their list of favorites.
         </td>
         <td>None.
         </td>
-        <td>A text message indicating whether the movie was successfully added to the user's favorites.</td>
+        <td>A JSON object holding the updated data of the user where the MovieID is added to the FavoriteMovies array. Example:
+<pre>
+{
+  "_id": "65134b87177fc702f561b6c5",
+  "Username": "User1",
+  "Password": "1111",
+  "Email": "user3@gmail.com",
+  "FavoriteMovies": [
+      "6512158099eb8a7d7fdf59c7"
+  ],
+  "__v": 0
+}
+</pre>
+        </td>
       </tr>
 
 
       <tr>
         <td>Allow users to remove a movie from their list of favorites.</td>
-        <td style="white-space: nowrap;">/users/:id/:movieTitle</td>
+        <td style="white-space: nowrap;">/users/:Username/movies/:MovieID</td>
         <td>DELETE</td>
         <td>
-          <span class="fw-bold">id</span> - The id of the user.
-            <br>  
-            <span class="fw-bold">title</span> - The title of the movie.
+          <span class="fw-bold">Username</span> - The Username of the user.
+          <br>
+          <span class="fw-bold">MovieID</span> - The MovieID of the movie which will be removed from their list of favorites.
         </td>
         <td>None.</td>
-        <td>A text message indicating whether the movie was successfully deleted from the user's favorites.</td>
+        <td>A JSON object holding the updated data of the user where the MovieID is removed from the FavoriteMovies array. Example:
+<pre>
+{
+  "_id": "65134b87177fc702f561b6c5",
+  "Username": "User1",
+  "Password": "1111",
+  "Email": "user3@gmail.com",
+  "FavoriteMovies": [],
+  "__v": 0
+}
+</pre>
+          
+        </td>
       </tr>
 
 
       <tr>
         <td>Allow existing users to deregister.</td>
-        <td style="white-space: nowrap;">/users/:id</td>
+        <td style="white-space: nowrap;">/users/:Username</td>
         <td>DELETE</td>
-        <td><span class="fw-bold">id</span> - The id of the user to deregister.
+        <td><span class="fw-bold">Username</span> - The Username of the user to deregister.
         </td>
         <td>None.</td>
-        <td>A text message indicating whether the user's email was successfully removed.</td>
+        <td>A text message indicating whether the user was successfully removed.</td>
       </tr>
     </tbody>
   </table>
