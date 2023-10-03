@@ -9,7 +9,10 @@ const express = require('express'),
 
 const { check, validationResult } = require('express-validator');
 
-mongoose.connect('mongodb://127.0.0.1:27017/movieVaultDB', { useNewUrlParser: true, useUnifiedTopology: true});
+// The actual CONNECTION_URI can be found on Heroku config vars
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true});
+// mongoose.connect('mongodb://127.0.0.1:27017/movieVaultDB', { useNewUrlParser: true, useUnifiedTopology: true});
+
 
 const app = express();
 
