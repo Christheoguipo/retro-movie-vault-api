@@ -116,7 +116,7 @@ app.post('/users',
   check('Username', 'Username contains non alphanumeric characters - not allowed.'). isAlphanumeric(),
   check('Password', 'Password is required.').not().isEmpty(),
   check('Email', 'Email does not appear to be valid.').isEmail(),
-  check('Birthday', 'Birthday does not appear to be valid Date.').isDate().optional({nullable: true})
+  check('Birthday', 'Birthday does not appear to be valid Date.').isDate()
 ], async (req, res) => {
 
   // Check the validation object for errors
@@ -154,7 +154,8 @@ app.post('/users',
 });
 
 // Get all users
-app.get('/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/users', passport.authenticate('jwt', { session: false })
+, async (req, res) => {
   await Users.find()
     .then((users) => {
       res.status(201).json(users);
@@ -181,11 +182,11 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), as
 app.put('/users/:Username', 
 // Validation logic here for request
 [
-  check('Username', 'Username is too short.').isLength({min: 5}),
+  // check('Username', 'Username is too short.').isLength({min: 5}),
   check('Username', 'Username contains non alphanumeric characters - not allowed.'). isAlphanumeric(),
   check('Password', 'Password is required.').not().isEmpty(),
   check('Email', 'Email does not appear to be valid.').isEmail(),
-  check('Birthday', 'Birthday does not appear to be valid Date.').isDate().optional({nullable: true})
+  check('Birthday', 'Birthday does not appear to be valid Date.').isDate()
 ], 
 passport.authenticate('jwt', { session: false }), 
 async (req, res) => {
