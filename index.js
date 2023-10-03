@@ -22,7 +22,8 @@ app.use(express.urlencoded({extended: true}));
 // not needed for Express v4.16 and higher
 // app.use(bodyParser.json());
 
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+let allowedOrigins = ['*'];
+// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
 const cors = require('cors');
 app.use(cors({
@@ -114,7 +115,8 @@ app.post('/users',
   check('Username', 'Username is required.').isLength({min: 5}),
   check('Username', 'Username contains non alphanumeric characters - not allowed.'). isAlphanumeric(),
   check('Password', 'Password is required.').not().isEmpty(),
-  check('Email', 'Email does not appear to be valid.').isEmail() 
+  check('Email', 'Email does not appear to be valid.').isEmail(),
+  check('Birthday', 'Birthday does not appear to be valid Date.').isDate()
 ], async (req, res) => {
 
   // Check the validation object for errors
@@ -176,15 +178,33 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), as
 });
 
 // Update user's info, by username
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.put('/users/:Username', 
+// Validation logic here for request
+[
+  check('Username', 'Username is required.').isLength({min: 5}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.'). isAlphanumeric(),
+  check('Password', 'Password is required.').not().isEmpty(),
+  check('Email', 'Email does not appear to be valid.').isEmail(),
+  check('Birthday', 'Birthday does not appear to be valid Date.').isDate()
+], 
+passport.authenticate('jwt', { session: false }), 
+async (req, res) => {
+
+  // Check the validation object for errors
+  let errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
   if (req.user.Username !== req.params.Username) {
     return res.status(400).send('Permission denied.');
   }
 
+  let hashedPassword = Users.hashPassword(req.body.Password);
   await Users.findOneAndUpdate({ Username: req.params.Username},{
     $set: {
       Username: req.body.Username,
-      Password: req.body.Password,
+      Password: hashedPassword,
       Email: req.body.Email,
       Birthday: req.body.Birthday
     }
