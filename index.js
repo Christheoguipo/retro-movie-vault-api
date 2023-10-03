@@ -116,7 +116,7 @@ app.post('/users',
   check('Username', 'Username contains non alphanumeric characters - not allowed.'). isAlphanumeric(),
   check('Password', 'Password is required.').not().isEmpty(),
   check('Email', 'Email does not appear to be valid.').isEmail(),
-  check('Birthday', 'Birthday does not appear to be valid Date.').isDate()
+  check('Birthday', 'Birthday does not appear to be valid Date.').isDate().optional({nullable: true})
 ], async (req, res) => {
 
   // Check the validation object for errors
@@ -185,7 +185,7 @@ app.put('/users/:Username',
   check('Username', 'Username contains non alphanumeric characters - not allowed.'). isAlphanumeric(),
   check('Password', 'Password is required.').not().isEmpty(),
   check('Email', 'Email does not appear to be valid.').isEmail(),
-  check('Birthday', 'Birthday does not appear to be valid Date.').isDate()
+  check('Birthday', 'Birthday does not appear to be valid Date.').isDate().optional({nullable: true})
 ], 
 passport.authenticate('jwt', { session: false }), 
 async (req, res) => {
