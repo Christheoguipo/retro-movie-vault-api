@@ -112,7 +112,7 @@ app.get('/directors/:Name', passport.authenticate('jwt', {session: false}), asyn
 app.post('/users', 
 // Validation logic here for request
 [
-  check('Username', 'Username is required.').isLength({min: 5}),
+  check('Username', 'Username is too short.').isLength({min: 5}),
   check('Username', 'Username contains non alphanumeric characters - not allowed.'). isAlphanumeric(),
   check('Password', 'Password is required.').not().isEmpty(),
   check('Email', 'Email does not appear to be valid.').isEmail(),
@@ -181,7 +181,7 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), as
 app.put('/users/:Username', 
 // Validation logic here for request
 [
-  check('Username', 'Username is required.').isLength({min: 5}),
+  check('Username', 'Username is too short.').isLength({min: 5}),
   check('Username', 'Username contains non alphanumeric characters - not allowed.'). isAlphanumeric(),
   check('Password', 'Password is required.').not().isEmpty(),
   check('Email', 'Email does not appear to be valid.').isEmail(),
