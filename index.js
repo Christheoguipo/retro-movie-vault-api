@@ -25,8 +25,8 @@ app.use(express.urlencoded({ extended: true }));
 // not needed for Express v4.16 and higher
 // app.use(bodyParser.json());
 
-let allowedOrigins = ["*"];
-// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+// let allowedOrigins = ["*"];
+let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'http://testsite.com'];
 
 const cors = require("cors");
 app.use(
