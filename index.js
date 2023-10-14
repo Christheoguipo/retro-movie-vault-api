@@ -139,16 +139,16 @@ app.get(
 app.post(
   "/users",
   // Validation logic here for request
-  [
-    check("Username", "Username is too short.").isLength({ min: 5 }),
-    check(
-      "Username",
-      "Username contains non alphanumeric characters - not allowed."
-    ).isAlphanumeric(),
-    check("Password", "Password is required.").not().isEmpty(),
-    check("Email", "Email does not appear to be valid.").isEmail(),
-    check("Birthday", "Birthday does not appear to be valid Date.").isDate(),
-  ],
+  // [
+  //   check("Username", "Username is too short.").isLength({ min: 5 }),
+  //   check(
+  //     "Username",
+  //     "Username contains non alphanumeric characters - not allowed."
+  //   ).isAlphanumeric(),
+  //   check("Password", "Password is required.").not().isEmpty(),
+  //   check("Email", "Email does not appear to be valid.").isEmail(),
+  //   check("Birthday", "Birthday does not appear to be valid Date.").isDate(),
+  // ],
   async (req, res) => {
     // Check the validation object for errors
     let errors = validationResult(req);
