@@ -60,7 +60,7 @@ app.use("/", express.static("public"));
 // Returns a list of ALL movies
 app.get(
   "/movies",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     await Movies.find()
       .then((movies) => {
