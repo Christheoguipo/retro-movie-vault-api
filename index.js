@@ -26,7 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 // app.use(bodyParser.json());
 
 // let allowedOrigins = ["*"];
-let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'http://testsite.com'];
+let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'http://testsite.com', 'https://retro-movie-vault-5ccf6999c998.herokuapp.com'];
 
 const cors = require("cors");
 app.use(
