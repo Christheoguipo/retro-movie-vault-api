@@ -27,7 +27,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // let allowedOrigins = ["*"];
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234'
-  , 'http://localhost:4200' // This is to allow angular client
+  , 'http://localhost:4200' // This is to allow the local angular client app
+  , 'https://christheoguipo.github.io' // This is to allow the deployed angular client app
   , 'https://retro-movie-vault.netlify.app'];
 
 const cors = require("cors");
