@@ -61,43 +61,66 @@ app.use("/", express.static("public"));
 
 
 /**
- * @api {get} /movies Get a list of movies
+ * @api {get} /movies Get All Movies
  * @apiName GetMovies
  * @apiGroup Movies
- * @apiDescription Retrieve a list of movies.
- * 
- * @apiHeader {String} Authorization User's JWT token for authentication (Bearer Token).
- * 
- * @apiSuccess {Object[]} movies List of movies.
- * @apiSuccess {String} movies.title Title of the movie.
- * @apiSuccess {String} movies.director Director of the movie.
- * @apiSuccess {Number} movies.year Year of release.
- * @apiSuccess {String} movies.genre Genre of the movie.
+ * @apiVersion 1.0.0
+ * @apiDescription Retrieves a list of all movies.
+ *
+ * @apiHeader {String} Authorization User's JWT token for authentication.
+ *
+ * @apiSuccess {Object[]} movies List of movie objects.
+ * @apiSuccess {Object} movies.Genre Genre information for the movie.
+ * @apiSuccess {String} movies.Genre.Name Name of the genre.
+ * @apiSuccess {String} movies.Genre.Description Description of the genre.
+ * @apiSuccess {Object} movies.Director Director information for the movie.
+ * @apiSuccess {String} movies.Director.Name Name of the director.
+ * @apiSuccess {String} movies.Director.Bio Biography of the director.
+ * @apiSuccess {String} movies.Director.Birthyear Birth year of the director.
+ * @apiSuccess {String} movies.Director.Deathyear Death year of the director (null if alive).
+ * @apiSuccess {Object[]} movies.Actors List of actors in the movie (empty array if none).
+ * @apiSuccess {String} movies._id Unique identifier for the movie.
+ * @apiSuccess {String} movies.Title Title of the movie.
+ * @apiSuccess {String} movies.Description Description of the movie.
+ * @apiSuccess {String} movies.Imageurl URL of the movie's image.
+ * @apiSuccess {Boolean} movies.Featured Indicates if the movie is featured or not.
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     [
- *       {
- *         "title": "Movie 1",
- *         "director": "Director 1",
- *         "year": 2022,
- *         "genre": "Action"
- *       },
- *       {
- *         "title": "Movie 2",
- *         "director": "Director 2",
- *         "year": 2023,
- *         "genre": "Drama"
- *       },
- *       // ... additional movies
+ *         {
+ *             "Genre": {
+ *                 "Name": "Animated",
+ *                 "Description": "Animation is a method in which pictures are manipulated to appear as moving images. In traditional animation, images are drawn or painted by hand on transparent celluloid sheets to be photographed and exhibited on film."
+ *             },
+ *             "Director": {
+ *                 "Name": "John Lasseter",
+ *                 "Bio": "John Lasseter is a pioneering animator and filmmaker who co-founded Pixar Animation Studios and directed beloved films like \"Toy Story\" and \"Cars.\"",
+ *                 "Birthyear": "1957-01-12",
+ *                 "Deathyear": null
+ *             },
+ *             "Actors": [],
+ *             "_id": "6512195699eb8a7d7fdf59cb",
+ *             "Title": "Toy Story 2",
+ *             "Description": "When Woody is stolen by a toy collector, Buzz and his friends set out on a rescue mission to save Woody before he becomes a museum toy property with his roundup gang Jessie, Prospector, and Bullseye.",
+ *             "Imageurl": "https://wallpaperaccess.com/full/1706600.jpg",
+ *             "Featured": false
+ *         },
+ *         // Additional movie objects...
  *     ]
  *
- * @apiError (500 Internal Server Error) {String} error Error message if the server encounters an issue.
+ * @apiError (401 Unauthorized) {String} error Missing or invalid authentication token.
+ * @apiErrorExample {json} Unauthorized:
+ *     HTTP/1.1 401 Unauthorized
+ *     {
+ *         "error": "Unauthorized - Missing or invalid authentication token."
+ *     }
  *
- * @apiErrorExample {json} Error-Response:
+ * @apiError (500 Internal Server Error) {String} error Something went wrong on the server.
+ * @apiErrorExample {json} InternalServerError:
  *     HTTP/1.1 500 Internal Server Error
  *     {
- *       "error": "Internal Server Error: Something went wrong while fetching movies."
+ *         "error": "Internal Server Error - Something went wrong on the server."
  *     }
  */
 app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -110,43 +133,72 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), async (req,
 });
 
 /**
- * @api {get} /movies/:Title Get a movie by title
+ * @api {get} /movies/:Title Get Movie by Title
  * @apiName GetMovieByTitle
  * @apiGroup Movies
- * @apiDescription Retrieve a movie by its title.
- * 
- * @apiHeader {String} Authorization User's JWT token for authentication (Bearer Token).
- * 
- * @apiParam {String} Title Title of the movie to retrieve.
- * 
- * @apiSuccess {String} title Title of the movie.
- * @apiSuccess {String} director Director of the movie.
- * @apiSuccess {Number} year Year of release.
- * @apiSuccess {String} genre Genre of the movie.
+ * @apiVersion 1.0.0
+ * @apiDescription Retrieves a specific movie by its title.
+ *
+ * @apiParam {String} Title Title of the movie to be retrieved.
+ *
+ * @apiHeader {String} Authorization User's JWT token for authentication.
+ *
+ * @apiSuccess {Object} movie Movie object.
+ * @apiSuccess {Object} movie.Genre Genre information for the movie.
+ * @apiSuccess {String} movie.Genre.Name Name of the genre.
+ * @apiSuccess {String} movie.Genre.Description Description of the genre.
+ * @apiSuccess {Object} movie.Director Director information for the movie.
+ * @apiSuccess {String} movie.Director.Name Name of the director.
+ * @apiSuccess {String} movie.Director.Bio Biography of the director.
+ * @apiSuccess {String} movie.Director.Birthyear Birth year of the director.
+ * @apiSuccess {String} movie.Director.Deathyear Death year of the director (null if alive).
+ * @apiSuccess {Object[]} movie.Actors List of actors in the movie (empty array if none).
+ * @apiSuccess {String} movie._id Unique identifier for the movie.
+ * @apiSuccess {String} movie.Title Title of the movie.
+ * @apiSuccess {String} movie.Description Description of the movie.
+ * @apiSuccess {String} movie.Imageurl URL of the movie's image.
+ * @apiSuccess {Boolean} movie.Featured Indicates if the movie is featured or not.
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       "title": "Movie 1",
- *       "director": "Director 1",
- *       "year": 2022,
- *       "genre": "Action"
+ *         "Genre": {
+ *             "Name": "Drama",
+ *             "Description": "Dramas follow a clearly defined narrative plot structure, portraying real-life scenarios or extreme situations with emotionally-driven characters."
+ *         },
+ *         "Director": {
+ *             "Name": "James Cameron",
+ *             "Bio": "James Cameron is a visionary director and filmmaker celebrated for his groundbreaking work on movies like \"Avatar\" and \"Titanic.\"",
+ *             "Birthyear": "1954-08-16",
+ *             "Deathyear": null
+ *         },
+ *         "Actors": [],
+ *         "_id": "651218a699eb8a7d7fdf59c9",
+ *         "Title": "Titanic",
+ *         "Description": "Incorporating both historical and fictionalized aspects, it is based on accounts of the sinking of RMS Titanic in 1912. Kate Winslet and Leonardo DiCaprio star as members of different social classes who fall in love during the ship's maiden voyage.",
+ *         "Imageurl": "https://wallpapercave.com/wp/UbJdgza.jpg",
+ *         "Featured": false
  *     }
  *
- * @apiError (400 Bad Request) {String} error Error message if the movie is not found.
- * 
- * @apiErrorExample {json} Error-Response:
+ * @apiError (401 Unauthorized) {String} error Missing or invalid authentication token.
+ * @apiErrorExample {json} Unauthorized:
+ *     HTTP/1.1 401 Unauthorized
+ *     {
+ *         "error": "Unauthorized - Missing or invalid authentication token."
+ *     }
+ *
+ * @apiError (400 Bad Request) {String} error The movie {Title} was not found.
+ * @apiErrorExample {json} MovieNotFound:
  *     HTTP/1.1 400 Bad Request
  *     {
- *       "error": "The movie MovieTitle was not found."
+ *         "error": "The movie {Title} was not found."
  *     }
- * 
- * @apiError (500 Internal Server Error) {String} error Error message if the server encounters an issue.
- * 
- * @apiErrorExample {json} Error-Response:
+ *
+ * @apiError (500 Internal Server Error) {String} error Something went wrong on the server.
+ * @apiErrorExample {json} InternalServerError:
  *     HTTP/1.1 500 Internal Server Error
  *     {
- *       "error": "Internal Server Error: Something went wrong while fetching the movie."
+ *         "error": "Internal Server Error - Something went wrong on the server."
  *     }
  */
 app.get(
@@ -170,59 +222,46 @@ app.get(
 );
 
 /**
- * @api {get} /movies/genre/:GenreName Get movies by genre
- * @apiName GetMoviesByGenre
+ * @api {get} /movies/genre/:GenreName Get Movie Genre by Name
+ * @apiName GetMovieGenreByName
  * @apiGroup Movies
- * @apiDescription Retrieve movies by their genre.
- * 
- * @apiHeader {String} Authorization User's JWT token for authentication (Bearer Token).
- * 
- * @apiParam {String} GenreName Name of the genre to retrieve movies for.
- * 
- * @apiSuccess {Object} Genre Genre information.
- * @apiSuccess {String} Genre.name Name of the genre.
- * @apiSuccess {String} Genre.description Description of the genre.
- * @apiSuccess {String} Genre.imageUrl URL to an image representing the genre.
- * @apiSuccess {Object[]} Genre.movies List of movies in the specified genre.
- * @apiSuccess {String} Genre.movies.title Title of the movie.
- * @apiSuccess {String} Genre.movies.director Director of the movie.
- * @apiSuccess {Number} Genre.movies.year Year of release.
+ * @apiVersion 1.0.0
+ * @apiDescription Retrieves the genre information for movies with a specific genre name.
+ *
+ * @apiParam {String} GenreName Name of the genre to be retrieved.
+ *
+ * @apiHeader {String} Authorization User's JWT token for authentication.
+ *
+ * @apiSuccess {Object} genre Genre object.
+ * @apiSuccess {String} genre.Name Name of the genre.
+ * @apiSuccess {String} genre.Description Description of the genre.
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       "name": "Action",
- *       "description": "Movies with high-intensity action sequences.",
- *       "imageUrl": "https://example.com/action.jpg",
- *       "movies": [
- *         {
- *           "title": "Movie 1",
- *           "director": "Director 1",
- *           "year": 2022
- *         },
- *         {
- *           "title": "Movie 2",
- *           "director": "Director 2",
- *           "year": 2023
- *         }
- *         // ... additional movies
- *       ]
+ *         "Name": "Drama",
+ *         "Description": "Dramas follow a clearly defined narrative plot structure, portraying real-life scenarios or extreme situations with emotionally-driven characters."
  *     }
  *
- * @apiError (400 Bad Request) {String} error Error message if the genre is not found.
- * 
- * @apiErrorExample {json} Error-Response:
+ * @apiError (401 Unauthorized) {String} error Missing or invalid authentication token.
+ * @apiErrorExample {json} Unauthorized:
+ *     HTTP/1.1 401 Unauthorized
+ *     {
+ *         "error": "Unauthorized - Missing or invalid authentication token."
+ *     }
+ *
+ * @apiError (400 Bad Request) {String} error Genre {GenreName} was not found.
+ * @apiErrorExample {json} GenreNotFound:
  *     HTTP/1.1 400 Bad Request
  *     {
- *       "error": "Genre GenreName was not found."
+ *         "error": "Genre {GenreName} was not found."
  *     }
- * 
- * @apiError (500 Internal Server Error) {String} error Error message if the server encounters an issue.
- * 
- * @apiErrorExample {json} Error-Response:
+ *
+ * @apiError (500 Internal Server Error) {String} error Something went wrong on the server.
+ * @apiErrorExample {json} InternalServerError:
  *     HTTP/1.1 500 Internal Server Error
  *     {
- *       "error": "Internal Server Error: Something went wrong while fetching movies by genre."
+ *         "error": "Internal Server Error - Something went wrong on the server."
  *     }
  */
 app.get(
@@ -246,59 +285,50 @@ app.get(
 );
 
 /**
- * @api {get} /directors/:Name Get movies by director
- * @apiName GetMoviesByDirector
+ * @api {get} /directors/:Name Get Director by Name
+ * @apiName GetDirectorByName
  * @apiGroup Directors
- * @apiDescription Retrieve movies directed by a specific director.
- * 
- * @apiHeader {String} Authorization User's JWT token for authentication (Bearer Token).
- * 
- * @apiParam {String} Name Name of the director to retrieve movies for.
- * 
- * @apiSuccess {Object} Director Director information.
- * @apiSuccess {String} Director.name Name of the director.
- * @apiSuccess {String} Director.bio Biography of the director.
- * @apiSuccess {String} Director.imageUrl URL to an image representing the director.
- * @apiSuccess {Object[]} Director.movies List of movies directed by the specified director.
- * @apiSuccess {String} Director.movies.title Title of the movie.
- * @apiSuccess {String} Director.movies.genre Genre of the movie.
- * @apiSuccess {Number} Director.movies.year Year of release.
+ * @apiVersion 1.0.0
+ * @apiDescription Retrieves information for a director by their name.
+ *
+ * @apiParam {String} Name Name of the director to be retrieved.
+ *
+ * @apiHeader {String} Authorization User's JWT token for authentication.
+ *
+ * @apiSuccess {Object} director Director object.
+ * @apiSuccess {String} director.Name Name of the director.
+ * @apiSuccess {String} director.Bio Biography of the director.
+ * @apiSuccess {String} director.Birthyear Birth year of the director.
+ * @apiSuccess {String} director.Deathyear Death year of the director (null if alive).
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       "name": "Director 1",
- *       "bio": "Renowned director with a successful career.",
- *       "imageUrl": "https://example.com/director1.jpg",
- *       "movies": [
- *         {
- *           "title": "Movie 1",
- *           "genre": "Drama",
- *           "year": 2022
- *         },
- *         {
- *           "title": "Movie 2",
- *           "genre": "Action",
- *           "year": 2023
- *         }
- *         // ... additional movies
- *       ]
+ *         "Name": "Steven Spielberg",
+ *         "Bio": "Steven Spielberg is a prolific filmmaker known for directing classic movies like \"E.T. the Extra-Terrestrial\" and \"Jurassic Park.\"",
+ *         "Birthyear": "1946-12-18",
+ *         "Deathyear": null
  *     }
  *
- * @apiError (400 Bad Request) {String} error Error message if the director is not found.
- * 
- * @apiErrorExample {json} Error-Response:
+ * @apiError (401 Unauthorized) {String} error Missing or invalid authentication token.
+ * @apiErrorExample {json} Unauthorized:
+ *     HTTP/1.1 401 Unauthorized
+ *     {
+ *         "error": "Unauthorized - Missing or invalid authentication token."
+ *     }
+ *
+ * @apiError (400 Bad Request) {String} error Director {Name} was not found.
+ * @apiErrorExample {json} DirectorNotFound:
  *     HTTP/1.1 400 Bad Request
  *     {
- *       "error": "Director Name was not found."
+ *         "error": "Director {Name} was not found."
  *     }
- * 
- * @apiError (500 Internal Server Error) {String} error Error message if the server encounters an issue.
- * 
- * @apiErrorExample {json} Error-Response:
+ *
+ * @apiError (500 Internal Server Error) {String} error Something went wrong on the server.
+ * @apiErrorExample {json} InternalServerError:
  *     HTTP/1.1 500 Internal Server Error
  *     {
- *       "error": "Internal Server Error: Something went wrong while fetching movies by director."
+ *         "error": "Internal Server Error - Something went wrong on the server."
  *     }
  */
 app.get(
@@ -322,66 +352,92 @@ app.get(
 );
 
 /**
- * @api {post} /users Create a new user
+ * @api {post} /users Create User
  * @apiName CreateUser
  * @apiGroup Users
- * @apiDescription Create a new user account.
- * 
- * @apiHeader {String} Authorization User's JWT token for authentication (Bearer Token).
- * 
- * @apiParam (Body) {String} Username User's username (min length: 5, alphanumeric).
- * @apiParam (Body) {String} Password User's password.
- * @apiParam (Body) {String} Email User's email address (must be valid).
- * @apiParam (Body) {Date} Birthday User's date of birth (must be a valid Date).
- * 
+ * @apiVersion 1.0.0
+ * @apiDescription Creates a new user with the provided information.
+ *
+ * @apiParam {String} Username User's username (min length: 5, alphanumeric).
+ * @apiParam {String} Password User's password (non-empty).
+ * @apiParam {String} Email User's email (valid email format).
+ * @apiParam {Date} Birthday User's birthday (valid date format).
+ *
+ * @apiHeader {String} Content-Type="application/json" Request content type.
+ *
+ * @apiSuccess {String} Username Username of the created user.
+ * @apiSuccess {String} Password Hashed password of the created user.
+ * @apiSuccess {String} Email Email of the created user.
+ * @apiSuccess {Date} Birthday Birthday of the created user.
+ * @apiSuccess {Array} FavoriteMovies Empty array for favorite movies (initially).
+ * @apiSuccess {String} _id Unique identifier for the created user.
+ * @apiSuccess {Number} __v Version of the document (MongoDB internal versioning).
+ *
  * @apiParamExample {json} Request-Example:
  *     {
- *       "Username": "NewUser",
- *       "Password": "StrongPassword123",
- *       "Email": "newuser@example.com",
- *       "Birthday": "2000-01-01"
+ *         "Username": "user9",
+ *         "Password": "user9",
+ *         "Email": "user9@gmail.com",
+ *         "Birthday": "2000-01-01"
  *     }
- * 
- * @apiSuccess (201 Created) {Object} user Created user object.
- * @apiSuccess {String} user.Username Username of the created user.
- * @apiSuccess {String} user.Email Email of the created user.
- * @apiSuccess {Date} user.Birthday Birthday of the created user.
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 Created
  *     {
- *       "Username": "NewUser",
- *       "Email": "newuser@example.com",
- *       "Birthday": "2000-01-01"
- *     }
- * 
- * @apiError (422 Unprocessable Entity) {Object[]} errors Array of validation errors.
- * @apiErrorExample {json} Validation-Error-Response:
- *     HTTP/1.1 422 Unprocessable Entity
- *     {
- *       "errors": [
- *         {"msg": "Username is too short.", "param": "Username", "location": "body"},
- *         {"msg": "Username contains non alphanumeric characters - not allowed.", "param": "Username", "location": "body"},
- *         {"msg": "Password is required.", "param": "Password", "location": "body"},
- *         {"msg": "Email does not appear to be valid.", "param": "Email", "location": "body"},
- *         {"msg": "Birthday does not appear to be valid Date.", "param": "Birthday", "location": "body"}
- *       ]
+ *         "Username": "user9",
+ *         "Password": "$2b$10$WM0XGiZhTwSG6IA3oz.H0ul0vD2p23.Yy8UxUmaQdPc7u4Vz7DoKK",
+ *         "Email": "user9@gmail.com",
+ *         "Birthday": "2000-01-01T00:00:00.000Z",
+ *         "FavoriteMovies": [],
+ *         "_id": "65776a91bac585852a17a95c",
+ *         "__v": 0
  *     }
  *
- * @apiError (400 Bad Request) {String} error Error message if the username already exists.
- * 
- * @apiErrorExample {json} Error-Response:
+ * @apiError (400 Bad Request) {String} error {Username} already exists.
+ * @apiErrorExample {json} UsernameExists:
  *     HTTP/1.1 400 Bad Request
  *     {
- *       "error": "Username already exists."
+ *         "error": "user9 already exists."
  *     }
- * 
- * @apiError (500 Internal Server Error) {String} error Error message if the server encounters an issue.
- * 
- * @apiErrorExample {json} Error-Response:
+ *
+ * @apiError (422 Unprocessable Entity) {Object[]} errors Array of validation errors.
+ * @apiErrorExample {json} ValidationErrors:
+ *     HTTP/1.1 422 Unprocessable Entity
+ *     {
+ *         "errors": [
+ *             {
+ *                 "msg": "Username is too short.",
+ *                 "param": "Username",
+ *                 "location": "body"
+ *             },
+ *             {
+ *                 "msg": "Username contains non alphanumeric characters - not allowed.",
+ *                 "param": "Username",
+ *                 "location": "body"
+ *             },
+ *             {
+ *                 "msg": "Password is required.",
+ *                 "param": "Password",
+ *                 "location": "body"
+ *             },
+ *             {
+ *                 "msg": "Email does not appear to be valid.",
+ *                 "param": "Email",
+ *                 "location": "body"
+ *             },
+ *             {
+ *                 "msg": "Birthday does not appear to be valid Date.",
+ *                 "param": "Birthday",
+ *                 "location": "body"
+ *             }
+ *         ]
+ *     }
+ *
+ * @apiError (500 Internal Server Error) {String} error Something went wrong on the server.
+ * @apiErrorExample {json} InternalServerError:
  *     HTTP/1.1 500 Internal Server Error
  *     {
- *       "error": "Internal Server Error: Something went wrong while creating the user."
+ *         "error": "Internal Server Error - Something went wrong on the server."
  *     }
  */
 app.post(
@@ -434,40 +490,50 @@ app.post(
 );
 
 /**
- * @api {get} /users Get a list of users
- * @apiName GetUsers
+ * @api {get} /users Get All Users
+ * @apiName GetAllUsers
  * @apiGroup Users
- * @apiDescription Retrieve a list of users.
- * 
- * @apiHeader {String} Authorization User's JWT token for authentication (Bearer Token).
- * 
- * @apiSuccess (200 OK) {Object[]} users List of user objects.
+ * @apiVersion 1.0.0
+ * @apiDescription Retrieves a list of all users.
+ *
+ * @apiHeader {String} Authorization User's JWT token for authentication.
+ *
+ * @apiSuccess {Object[]} users List of user objects.
+ * @apiSuccess {String} users._id Unique identifier for the user.
  * @apiSuccess {String} users.Username Username of the user.
+ * @apiSuccess {String} users.Password Hashed password of the user.
  * @apiSuccess {String} users.Email Email of the user.
  * @apiSuccess {Date} users.Birthday Birthday of the user.
+ * @apiSuccess {Array} users.FavoriteMovies Array of favorite movie IDs for the user (empty array initially).
+ * @apiSuccess {Number} users.__v Version of the document (MongoDB internal versioning).
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     [
- *       {
- *         "Username": "User1",
- *         "Email": "user1@example.com",
- *         "Birthday": "1995-05-15"
- *       },
- *       {
- *         "Username": "User2",
- *         "Email": "user2@example.com",
- *         "Birthday": "1990-12-10"
- *       },
- *       // ... additional users
+ *         {
+ *             "_id": "651c616a22d1f1825c83da0b",
+ *             "Username": "User2",
+ *             "Password": "$2b$10$/ACgE3IPKbSXDMGbFcW31uEMGqCxJ6Ykd1BHwtfn5Oo4FZRXH/9me",
+ *             "Email": "User2NewEmail@gmail.com",
+ *             "Birthday": "2000-01-01T00:00:00.000Z",
+ *             "FavoriteMovies": [],
+ *             "__v": 0
+ *         },
+ *         // Additional user objects...
  *     ]
- * 
- * @apiError (500 Internal Server Error) {String} error Error message if the server encounters an issue.
- * 
- * @apiErrorExample {json} Error-Response:
+ *
+ * @apiError (401 Unauthorized) {String} error Missing or invalid authentication token.
+ * @apiErrorExample {json} Unauthorized:
+ *     HTTP/1.1 401 Unauthorized
+ *     {
+ *         "error": "Unauthorized - Missing or invalid authentication token."
+ *     }
+ *
+ * @apiError (500 Internal Server Error) {String} error Something went wrong on the server.
+ * @apiErrorExample {json} InternalServerError:
  *     HTTP/1.1 500 Internal Server Error
  *     {
- *       "error": "Internal Server Error: Something went wrong while fetching users."
+ *         "error": "Internal Server Error - Something went wrong on the server."
  *     }
  */
 app.get(
@@ -486,33 +552,48 @@ app.get(
 );
 
 /**
- * @api {get} /users/:Username Get user by username
+ * @api {get} /users/:Username Get User by Username
  * @apiName GetUserByUsername
  * @apiGroup Users
- * @apiDescription Retrieve user information by username.
- * 
- * @apiHeader {String} Authorization User's JWT token for authentication (Bearer Token).
- * 
- * @apiParam {String} Username Username of the user to retrieve.
- * 
- * @apiSuccess (200 OK) {String} Username Username of the user.
+ * @apiVersion 1.0.0
+ * @apiDescription Retrieves information for a user by their username.
+ *
+ * @apiParam {String} Username Username of the user to be retrieved.
+ *
+ * @apiHeader {String} Authorization User's JWT token for authentication.
+ *
+ * @apiSuccess {String} _id Unique identifier for the user.
+ * @apiSuccess {String} Username Username of the user.
+ * @apiSuccess {String} Password Hashed password of the user.
  * @apiSuccess {String} Email Email of the user.
  * @apiSuccess {Date} Birthday Birthday of the user.
+ * @apiSuccess {Array} FavoriteMovies Array of favorite movie IDs for the user (empty array initially).
+ * @apiSuccess {Number} __v Version of the document (MongoDB internal versioning).
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       "Username": "User1",
- *       "Email": "user1@example.com",
- *       "Birthday": "1995-05-15"
+ *         "_id": "65776a91bac585852a17a95c",
+ *         "Username": "user9",
+ *         "Password": "$2b$10$WM0XGiZhTwSG6IA3oz.H0ul0vD2p23.Yy8UxUmaQdPc7u4Vz7DoKK",
+ *         "Email": "user9@gmail.com",
+ *         "Birthday": "2000-01-01T00:00:00.000Z",
+ *         "FavoriteMovies": [],
+ *         "__v": 0
  *     }
- * 
- * @apiError (500 Internal Server Error) {String} error Error message if the server encounters an issue.
- * 
- * @apiErrorExample {json} Error-Response:
+ *
+ * @apiError (401 Unauthorized) {String} error Missing or invalid authentication token.
+ * @apiErrorExample {json} Unauthorized:
+ *     HTTP/1.1 401 Unauthorized
+ *     {
+ *         "error": "Unauthorized - Missing or invalid authentication token."
+ *     }
+ *
+ * @apiError (500 Internal Server Error) {String} error Something went wrong on the server.
+ * @apiErrorExample {json} InternalServerError:
  *     HTTP/1.1 500 Internal Server Error
  *     {
- *       "error": "Internal Server Error: Something went wrong while fetching user by username."
+ *         "error": "Internal Server Error - Something went wrong on the server."
  *     }
  */
 app.get(
@@ -531,53 +612,72 @@ app.get(
 );
 
 /**
- * @api {put} /users/:Username Update user information
+ * @api {put} /users/:Username Update User Information
  * @apiName UpdateUser
  * @apiGroup Users
- * @apiDescription Update user information by username.
- * 
- * @apiHeader {String} Authorization User's JWT token for authentication (Bearer Token).
- * 
- * @apiParam (Body) {String} Username User's username (min length: 5, alphanumeric).
- * @apiParam (Body) {String} Password User's updated password.
- * @apiParam (Body) {String} Email User's updated email address (must be valid).
- * @apiParam (Body) {Date} Birthday User's updated date of birth (must be a valid Date).
- * 
+ * @apiVersion 1.0.0
+ * @apiDescription Updates information for a user with the provided username.
+ *
+ * @apiParam {String} Username User's username (min length: 5, alphanumeric).
+ * @apiParam {String} Password User's password (non-empty).
+ * @apiParam {String} Email User's email (valid email format).
+ * @apiParam {Date} Birthday User's birthday (valid date format).
+ *
+ * @apiHeader {String} Authorization User's JWT token for authentication.
+ * @apiHeader {String} Content-Type="application/json" Request content type.
+ *
+ * @apiSuccess {String} _id Unique identifier for the user.
+ * @apiSuccess {String} Username Updated username of the user.
+ * @apiSuccess {String} Password Hashed password of the user.
+ * @apiSuccess {String} Email Updated email of the user.
+ * @apiSuccess {Date} Birthday Updated birthday of the user.
+ * @apiSuccess {Array} FavoriteMovies Updated array of favorite movie IDs for the user.
+ * @apiSuccess {Number} __v Version of the document (MongoDB internal versioning).
+ *
  * @apiParamExample {json} Request-Example:
  *     {
- *       "Username": "UpdatedUser",
- *       "Password": "UpdatedPassword123",
- *       "Email": "updateduser@example.com",
- *       "Birthday": "2000-02-02"
+ *         "Username": "user9",
+ *         "Password": "newpassword",
+ *         "Email": "new@email.com",
+ *         "Birthday": "2005-01-01"
  *     }
- * 
- * @apiSuccess (200 OK) {Object} user Updated user object.
- * @apiSuccess {String} user.Username Updated username of the user.
- * @apiSuccess {String} user.Email Updated email of the user.
- * @apiSuccess {Date} user.Birthday Updated birthday of the user.
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       "Username": "UpdatedUser",
- *       "Email": "updateduser@example.com",
- *       "Birthday": "2000-02-02"
+ *         "_id": "65592d088e592ab3286693b8",
+ *         "Username": "user9",
+ *         "Password": "$2b$10$QyzGqZ1wV66M44NGVyRui.gbCHsvjsW3vD5vaN/0rPykIBLd701Em",
+ *         "Email": "new@email.com",
+ *         "Birthday": "2005-01-01T00:00:00.000Z",
+ *         "FavoriteMovies": [
+ *             "651219ba99eb8a7d7fdf59d0",
+ *             "651219ba99eb8a7d7fdf59ce",
+ *             "6512195699eb8a7d7fdf59cd",
+ *             "651218a699eb8a7d7fdf59ca"
+ *         ],
+ *         "__v": 0
  *     }
- * 
- * @apiError (400 Bad Request) {String} error Error message if the user is not found or permission is denied.
- * 
- * @apiErrorExample {json} Error-Response:
+ *
+ * @apiError (400 Bad Request) {String} error Permission denied.
+ * @apiErrorExample {json} PermissionDenied:
  *     HTTP/1.1 400 Bad Request
  *     {
- *       "error": "User not found."
+ *         "error": "Permission denied."
  *     }
- * 
- * @apiError (500 Internal Server Error) {String} error Error message if the server encounters an issue.
- * 
- * @apiErrorExample {json} Error-Response:
+ *
+ * @apiError (401 Unauthorized) {String} error Missing or invalid authentication token.
+ * @apiErrorExample {json} Unauthorized:
+ *     HTTP/1.1 401 Unauthorized
+ *     {
+ *         "error": "Unauthorized - Missing or invalid authentication token."
+ *     }
+ *
+ * @apiError (500 Internal Server Error) {String} error Something went wrong on the server.
+ * @apiErrorExample {json} InternalServerError:
  *     HTTP/1.1 500 Internal Server Error
  *     {
- *       "error": "Internal Server Error: Something went wrong while updating the user."
+ *         "error": "Internal Server Error - Something went wrong on the server."
  *     }
  */
 app.put(
@@ -634,44 +734,62 @@ app.put(
 );
 
 /**
- * @api {post} /users/:Username/movies/:MovieID Add movie to user's favorites
- * @apiName AddMovieToFavorites
+ * @api {post} /users/:Username/movies/:MovieID Add Movie to User's Favorites
+ * @apiName AddMovieToUserFavorites
  * @apiGroup Users
- * @apiDescription Add a movie to the user's list of favorite movies.
- * 
- * @apiHeader {String} Authorization User's JWT token for authentication (Bearer Token).
- * 
+ * @apiVersion 1.0.0
+ * @apiDescription Adds a movie to the list of favorite movies for a user.
+ *
  * @apiParam {String} Username Username of the user.
- * @apiParam {String} MovieID ID of the movie to add to favorites.
- * 
- * @apiSuccess (200 OK) {String} Username Username of the user.
+ * @apiParam {String} MovieID Unique identifier of the movie to be added to favorites.
+ *
+ * @apiHeader {String} Authorization User's JWT token for authentication.
+ *
+ * @apiSuccess {String} _id Unique identifier for the user.
+ * @apiSuccess {String} Username Username of the user.
+ * @apiSuccess {String} Password Hashed password of the user.
  * @apiSuccess {String} Email Email of the user.
  * @apiSuccess {Date} Birthday Birthday of the user.
- * @apiSuccess {String[]} FavoriteMovies Updated list of favorite movies.
- * 
+ * @apiSuccess {Array} FavoriteMovies Updated array of favorite movie IDs for the user.
+ * @apiSuccess {Number} __v Version of the document (MongoDB internal versioning).
+ *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       "Username": "User1",
- *       "Email": "user1@example.com",
- *       "Birthday": "1995-05-15",
- *       "FavoriteMovies": ["MovieID1", "MovieID2", "NewMovieID"]
+ *         "_id": "65592d088e592ab3286693b8",
+ *         "Username": "user9",
+ *         "Password": "$2b$10$QyzGqZ1wV66M44NGVyRui.gbCHsvjsW3vD5vaN/0rPykIBLd701Em",
+ *         "Email": "new@email.com",
+ *         "Birthday": "2005-01-01T00:00:00.000Z",
+ *         "FavoriteMovies": [
+ *             "651219ba99eb8a7d7fdf59d0",
+ *             "651219ba99eb8a7d7fdf59ce",
+ *             "6512195699eb8a7d7fdf59cd",
+ *             "651218a699eb8a7d7fdf59ca",
+ *             "6512195699eb8a7d7fdf59cb"
+ *         ],
+ *         "__v": 0
  *     }
- * 
- * @apiError (400 Bad Request) {String} error Error message if the user is not found.
- * 
- * @apiErrorExample {json} Error-Response:
+ *
+ * @apiError (400 Bad Request) {String} error User not found.
+ * @apiErrorExample {json} UserNotFound:
  *     HTTP/1.1 400 Bad Request
  *     {
- *       "error": "User not found."
+ *         "error": "User not found."
  *     }
- * 
- * @apiError (500 Internal Server Error) {String} error Error message if the server encounters an issue.
- * 
- * @apiErrorExample {json} Error-Response:
+ *
+ * @apiError (401 Unauthorized) {String} error Missing or invalid authentication token.
+ * @apiErrorExample {json} Unauthorized:
+ *     HTTP/1.1 401 Unauthorized
+ *     {
+ *         "error": "Unauthorized - Missing or invalid authentication token."
+ *     }
+ *
+ * @apiError (500 Internal Server Error) {String} error Something went wrong on the server.
+ * @apiErrorExample {json} InternalServerError:
  *     HTTP/1.1 500 Internal Server Error
  *     {
- *       "error": "Internal Server Error: Something went wrong while adding the movie to favorites."
+ *         "error": "Internal Server Error - Something went wrong on the server."
  *     }
  */
 app.post(
@@ -703,36 +821,61 @@ app.post(
 );
 
 /**
- * @api {delete} /users/:Username/movies/:MovieID Remove movie from user's favorites
- * @apiName RemoveMovieFromFavorites
+ * @api {delete} /users/:Username/movies/:MovieID Remove Movie from User's Favorites
+ * @apiName RemoveMovieFromUserFavorites
  * @apiGroup Users
- * @apiDescription Remove a movie from the user's list of favorite movies.
- * 
- * @apiHeader {String} Authorization User's JWT token for authentication (Bearer Token).
- * 
+ * @apiVersion 1.0.0
+ * @apiDescription Removes a movie from the list of favorite movies for a user.
+ *
  * @apiParam {String} Username Username of the user.
- * @apiParam {String} MovieID ID of the movie to remove from favorites.
- * 
- * @apiSuccess (200 OK) {String} Username Username of the user.
+ * @apiParam {String} MovieID Unique identifier of the movie to be removed from favorites.
+ *
+ * @apiHeader {String} Authorization User's JWT token for authentication.
+ *
+ * @apiSuccess {String} _id Unique identifier for the user.
+ * @apiSuccess {String} Username Username of the user.
+ * @apiSuccess {String} Password Hashed password of the user.
  * @apiSuccess {String} Email Email of the user.
  * @apiSuccess {Date} Birthday Birthday of the user.
- * @apiSuccess {String[]} FavoriteMovies Updated list of favorite movies.
- * 
+ * @apiSuccess {Array} FavoriteMovies Updated array of favorite movie IDs for the user.
+ * @apiSuccess {Number} __v Version of the document (MongoDB internal versioning).
+ *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       "Username": "User1",
- *       "Email": "user1@example.com",
- *       "Birthday": "1995-05-15",
- *       "FavoriteMovies": ["MovieID1", "MovieID2"]
+ *         "_id": "65592d088e592ab3286693b8",
+ *         "Username": "user9",
+ *         "Password": "$2b$10$QyzGqZ1wV66M44NGVyRui.gbCHsvjsW3vD5vaN/0rPykIBLd701Em",
+ *         "Email": "new@email.com",
+ *         "Birthday": "2005-01-01T00:00:00.000Z",
+ *         "FavoriteMovies": [
+ *             "651219ba99eb8a7d7fdf59d0",
+ *             "651219ba99eb8a7d7fdf59ce",
+ *             "6512195699eb8a7d7fdf59cd",
+ *             "651218a699eb8a7d7fdf59ca"
+ *         ],
+ *         "__v": 0
  *     }
- * 
- * @apiError (500 Internal Server Error) {String} error Error message if the server encounters an issue.
- * 
- * @apiErrorExample {json} Error-Response:
+ *
+ * @apiError (400 Bad Request) {String} error User not found.
+ * @apiErrorExample {json} UserNotFound:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *         "error": "User not found."
+ *     }
+ *
+ * @apiError (401 Unauthorized) {String} error Missing or invalid authentication token.
+ * @apiErrorExample {json} Unauthorized:
+ *     HTTP/1.1 401 Unauthorized
+ *     {
+ *         "error": "Unauthorized - Missing or invalid authentication token."
+ *     }
+ *
+ * @apiError (500 Internal Server Error) {String} error Something went wrong on the server.
+ * @apiErrorExample {json} InternalServerError:
  *     HTTP/1.1 500 Internal Server Error
  *     {
- *       "error": "Internal Server Error: Something went wrong while removing the movie from favorites."
+ *         "error": "Internal Server Error - Something went wrong on the server."
  *     }
  */
 app.delete(
@@ -760,39 +903,42 @@ app.delete(
 );
 
 /**
- * @api {delete} /users/:Username Delete user account
+ * @api {delete} /users/:Username Delete User
  * @apiName DeleteUser
  * @apiGroup Users
- * @apiDescription Delete a user account by username.
- * 
- * @apiHeader {String} Authorization User's JWT token for authentication (Bearer Token).
- * 
- * @apiParam {String} Username Username of the user to delete.
- * 
- * @apiSuccess (200 OK) {String} message Success message indicating the user was deleted.
- * 
- * @apiSuccessExample {json} Success-Response:
+ * @apiVersion 1.0.0
+ * @apiDescription Deletes a user with the provided username.
+ *
+ * @apiParam {String} Username Username of the user to be deleted.
+ *
+ * @apiHeader {String} Authorization User's JWT token for authentication.
+ *
+ * @apiSuccess {String} Message Deletion success message.
+ *
+ * @apiSuccessExample {text} Success-Response:
  *     HTTP/1.1 200 OK
- *     {
- *       "message": "User1 was deleted."
- *     }
- * 
- * @apiError (400 Bad Request) {String} error Error message if the user is not found.
- * 
- * @apiErrorExample {json} Error-Response:
+ *     user9 was deleted.
+ *
+ * @apiError (400 Bad Request) {String} error User not found.
+ * @apiErrorExample {json} UserNotFound:
  *     HTTP/1.1 400 Bad Request
  *     {
- *       "error": "Username was not found."
- *     }
- * 
- * @apiError (500 Internal Server Error) {String} error Error message if the server encounters an issue.
- * 
- * @apiErrorExample {json} Error-Response:
- *     HTTP/1.1 500 Internal Server Error
- *     {
- *       "error": "Internal Server Error: Something went wrong while deleting the user."
+ *         "error": "user9 was not found."
  *     }
  *
+ * @apiError (401 Unauthorized) {String} error Missing or invalid authentication token.
+ * @apiErrorExample {json} Unauthorized:
+ *     HTTP/1.1 401 Unauthorized
+ *     {
+ *         "error": "Unauthorized - Missing or invalid authentication token."
+ *     }
+ *
+ * @apiError (500 Internal Server Error) {String} error Something went wrong on the server.
+ * @apiErrorExample {json} InternalServerError:
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *         "error": "Internal Server Error - Something went wrong on the server."
+ *     }
  */
 app.delete(
   "/users/:Username",
