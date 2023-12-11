@@ -12,14 +12,25 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
+    "swagger-jsdoc": "^6.2.8",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "eslint": "^8.49.0",
     "nodemon": "^3.0.1"
   },
-  "name": "retro-movie-vault-api",
+  "name": "Retro Movie Vault API",
   "version": "1.0.0",
+  "apidoc": {
+    "header": {
+      "title": "Introduction",
+      "filename": "header.md"
+    },
+    "footer": {
+      "title": "AI Usage Declaration",
+      "filename": "footer.md"
+    }
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -28,5 +39,5 @@
   },
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "REST API"
 }
