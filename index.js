@@ -817,9 +817,15 @@ app.get("/", (req, res) => {
   res.send("Classic Movies of all Time!");
 });
 
-app.get("/documentation", (req, res) => {
-  res.sendFile("out/index.html", { root: __dirname });
-});
+const documentationPath = path.join(__dirname, "out");
+
+// Serve the API documentation and its assets
+app.use("/documentation", express.static(documentationPath));
+
+
+// app.get("/documentation", (req, res) => {
+//   res.sendFile("out/index.html", { root: __dirname });
+// });
 
 // Catches errors
 app.use((err, req, res, next) => {
