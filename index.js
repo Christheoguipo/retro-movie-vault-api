@@ -818,7 +818,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/documentation", (req, res) => {
-  res.sendFile("public/documentation.html", { root: __dirname });
+  res.sendFile("out/index.html", { root: __dirname });
 });
 
 // Catches errors
