@@ -813,7 +813,7 @@ app.delete(
   }
 );
 
-app.get("/", (req, res) => {
+app.get("/home", (req, res) => {
   res.send("Classic Movies of all Time!");
 });
 
