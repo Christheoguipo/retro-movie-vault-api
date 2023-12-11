@@ -1,0 +1,1 @@
+This documentation contains all the possible API options for interacting with movies, directors, and user-related functionalities.
