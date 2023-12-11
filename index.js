@@ -817,9 +817,9 @@ app.get("/", (req, res) => {
   res.send("Classic Movies of all Time!");
 });
 
-app.get("/documentation", (req, res) => {
-  res.sendFile("public/documentation.html", { root: __dirname });
-});
+// app.get("/documentation", (req, res) => {
+//   res.sendFile("public/documentation.html", { root: __dirname });
+// });
 
 // Catches errors
 app.use((err, req, res, next) => {
