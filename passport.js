@@ -7,6 +7,12 @@ let Users = Models.User,
   JWTStrategy = passportJWT.Strategy,
   ExtractJWT = passportJWT.ExtractJwt;
 
+/**
+ * Passport Local Strategy configuration for user authentication.
+ * @param {string} options.usernameField - The field name for the username in the request body.
+ * @param {string} options.passwordField - The field name for the password in the request body.
+ * @returns {void}
+ */
 passport.use(
   new LocalStrategy(
     {
@@ -16,31 +22,38 @@ passport.use(
     async (username, password, callback) => {
       console.log(`${username} ${password}`);
       await Users.findOne({ Username: username })
-      .then((user) => {
-        if (!user) {
-          console.log('incorrect username');
-          return callback(null, false, {
-            message: 'Incorrect username or password.',
-          });
-        }
-        if (!user.validatePassword(password)) {
-          console.log('incorrect password');
-          return callback(null, false, { message: 'Incorrect password.'});
-        }
-        
-        console.log('finished');
-        return callback(null, user);
-      })
-      .catch((error) => {
-        if (error) {
-          console.log(error);
-          return callback(error);
-        }
-      });
+        .then((user) => {
+          if (!user) {
+            console.log('incorrect username');
+            return callback(null, false, {
+              message: 'Incorrect username or password.',
+            });
+          }
+          if (!user.validatePassword(password)) {
+            console.log('incorrect password');
+            return callback(null, false, { message: 'Incorrect password.' });
+          }
+
+          console.log('finished');
+          return callback(null, user);
+        })
+        .catch((error) => {
+          if (error) {
+            console.log(error);
+            return callback(error);
+          }
+        });
     }
   )
 );
 
+
+/**
+ * Passport JWT Strategy configuration for user authentication.
+ * @param {Function} options.jwtFromRequest - A function to extract the JWT from the request.
+ * @param {string} options.secretOrKey - The secret or key for verifying the JWT.
+ * @returns {void}
+ */
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
   secretOrKey: 'your_jwt_secret'
