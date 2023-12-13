@@ -10,6 +10,14 @@ The Retro Movie Vault API is a RESTful web service that provides access to a cur
 - **Search:** Search for movies based on title.
 - **Movie Details:** Get detailed information about a specific movie, including genre, synopsis, and director.
 
+## Technologies Used
+
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- APIdoc
+
 ## API Documentation
 
 Explore the API endpoints and learn how to integrate the Retro Movie Vault API into your application by referring to the [API Documentation](https://retro-movie-vault-5ccf6999c998.herokuapp.com/).
