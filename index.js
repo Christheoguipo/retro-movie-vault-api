@@ -13,7 +13,10 @@ mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-// mongoose.connect('mongodb://127.0.0.1:27017/movieVaultDB', { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect("mongodb://127.0.0.1:27017/movieVaultDB", {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 
 const app = express();
 
@@ -24,10 +27,14 @@ app.use(express.urlencoded({ extended: true }));
 // app.use(bodyParser.json());
 
 // let allowedOrigins = ["*"];
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234'
-  , 'http://localhost:4200' // This is to allow the local angular client app
-  , 'https://christheoguipo.github.io' // This is to allow the deployed angular client app
-  , 'https://retro-movie-vault.netlify.app'];
+let allowedOrigins = [
+  "http://localhost:8080",
+  "http://testsite.com",
+  "http://localhost:1234",
+  "http://localhost:4200", // This is to allow the local angular client app
+  "https://christheoguipo.github.io", // This is to allow the deployed angular client app
+  "https://retro-movie-vault.netlify.app",
+];
 
 const cors = require("cors");
 
@@ -58,7 +65,6 @@ app.use(morgan("common"));
 
 // routes requests to 'public' folder
 app.use("/", express.static("public"));
-
 
 /**
  * @api {get} /movies Get All Movies
@@ -123,14 +129,18 @@ app.use("/", express.static("public"));
  *         "error": "Internal Server Error - Something went wrong on the server."
  *     }
  */
-app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  try {
-    const movies = await Movies.find();
-    res.json(movies);
-  } catch (err) {
-    res.status(500).send('Error: ' + err);
+app.get(
+  "/movies",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const movies = await Movies.find();
+      res.json(movies);
+    } catch (err) {
+      res.status(500).send("Error: " + err);
+    }
   }
-});
+);
 
 /**
  * @api {get} /movies/:Title Get Movie by Title
@@ -477,13 +487,11 @@ app.post(
               res.status(201).json(user);
             })
             .catch((error) => {
-              console.error(error);
               res.status(500).send("Error: " + error);
             });
         }
       })
       .catch((error) => {
-        console.error(error);
         res.status(500).send("Error: " + error);
       });
   }
@@ -545,7 +553,6 @@ app.get(
         res.status(201).json(users);
       })
       .catch((err) => {
-        console.err(err);
         res.status(500).send("Error: " + err);
       });
   }
@@ -605,7 +612,6 @@ app.get(
         res.json(user);
       })
       .catch((err) => {
-        console.err(err);
         res.status(500).send("Error: " + err);
       });
   }
@@ -953,7 +959,6 @@ app.delete(
         }
       })
       .catch((err) => {
-        console.error(err);
         res.status(500).send("Error: " + err);
       });
   }
@@ -969,7 +974,6 @@ app.get("/documentation", (req, res) => {
 
 // Catches errors
 app.use((err, req, res, next) => {
-  console.error(err.stack);
 
   res.status(500).send({
     message: err.message,
