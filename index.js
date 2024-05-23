@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const express = require("express"),
   morgan = require("morgan"),
   uuid = require("uuid"),
@@ -13,10 +17,6 @@ mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-// mongoose.connect("mongodb://127.0.0.1:27017/movieVaultDB", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
 
 const app = express();
 
@@ -974,7 +974,6 @@ app.get("/documentation", (req, res) => {
 
 // Catches errors
 app.use((err, req, res, next) => {
-
   res.status(500).send({
     message: err.message,
   });
